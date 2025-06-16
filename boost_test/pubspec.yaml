@@ -26,8 +26,13 @@ dependencies:
   flutter_boost:
     git:
       url: 'https://github.com/alibaba/flutter_boost.git'
-      ref: '4.6.5'
+      ref: '4.2.2'
   cached_network_image: ^3.2.3
+  super_player:
+    git:
+      url: https://github.com/LiteAVSDK/Player_Flutter
+      path: Flutter
+      ref: "6b87311"
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

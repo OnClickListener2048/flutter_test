@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boost/flutter_boost.dart';
+import 'package:super_player/super_player.dart';
 
 void main() {
   ///这里的CustomFlutterBinding调用务必不可缺少，用于控制Boost状态的resume和pause
@@ -76,7 +77,7 @@ class _MyAppState extends State<MyApp> {
   /// 如果用MaterialPageRoute的话同理
 
   Map<String, FlutterBoostRouteFactory> routerMap = {
-    '/': (settings, bool isContainerPage, uniqueId) {
+    '/': (settings, uniqueId) {
       return MaterialPageRoute(
           settings: settings,
           builder: (_) {
@@ -85,26 +86,34 @@ class _MyAppState extends State<MyApp> {
             );
           });
     },
-    'mainPage': (settings, bool isContainerPage, uniqueId) {
+    'mainPage': (settings,  uniqueId) {
       return MaterialPageRoute(
           settings: settings,
           builder: (_) {
             return const MainPage(
               data: "",
             );
+          });
+    },
+
+    'live': (settings,  uniqueId) {
+      return MaterialPageRoute(
+          settings: settings,
+          builder: (_) {
+            return const Live();
           });
     },
 
 
   };
 
-  Route<dynamic>? routeFactory(RouteSettings settings, bool isContainerPage,String? uniqueId) {
-    print("routeFactory $settings $isContainerPage $uniqueId");
+  Route<dynamic>? routeFactory(RouteSettings settings, String? uniqueId) {
+    print("routeFactory $settings  $uniqueId");
     FlutterBoostRouteFactory? func = routerMap[settings.name];
     if (func ==null) {
       return null;
     }
-    return func(settings, isContainerPage, uniqueId);
+    return func(settings, uniqueId);
   }
 
   Widget appBuilder(Widget home) {
@@ -127,6 +136,33 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+class Live extends StatefulWidget {
+  const Live({super.key});
+
+  @override
+  State<Live> createState() => _LiveState();
+}
+
+class _LiveState extends State<Live> {
+
+  TXLivePlayerController txLivePlayerController = TXLivePlayerController();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body:  Container(
+          width: 200,
+          height: 200,
+          child: TXPlayerVideo(
+            onRenderViewCreatedListener: (viewId) {
+              txLivePlayerController.setPlayerView(viewId);
+              txLivePlayerController.startLivePlay("http://prod-yungou-liveplay.jtmm.com/live/1600052372_257715297_852950.flv");
+            },
+          )),
+    );
+  }
+}
+
 
 class MainPage extends StatelessWidget {
   const MainPage({required Object data});

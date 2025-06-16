@@ -9,7 +9,7 @@
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$USER_HOME$/.pub-cache/git/flutter_boost-6df80cc1ea425cde1bac7d0265407977221061df/android" />
+            <option value="$USER_HOME$/.pub-cache/git/flutter_boost-2e65cd6ebccd727c89d1a134175d724e5005a414/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/path_provider_android-2.2.1/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/sqflite-2.2.8+4/android" />
             <option value="$PROJECT_DIR$" />

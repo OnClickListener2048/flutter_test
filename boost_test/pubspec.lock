@@ -122,11 +122,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "4.6.5"
-      resolved-ref: "6df80cc1ea425cde1bac7d0265407977221061df"
+      ref: "4.2.2"
+      resolved-ref: "2e65cd6ebccd727c89d1a134175d724e5005a414"
       url: "https://github.com/alibaba/flutter_boost.git"
     source: git
-    version: "4.6.5"
+    version: "3.0.0"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -353,6 +353,15 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.0"
+  super_player:
+    dependency: "direct main"
+    description:
+      path: Flutter
+      ref: "6b87311"
+      resolved-ref: "6b87311457ee5749adcde202316e06af28b9b80d"
+      url: "https://github.com/LiteAVSDK/Player_Flutter"
+    source: git
+    version: "12.5.1"
   synchronized:
     dependency: transitive
     description:
