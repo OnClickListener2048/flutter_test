@@ -10,7 +10,6 @@ void main() {
   ///这里的CustomFlutterBinding调用务必不可缺少，用于控制Boost状态的resume和pause
   ///
 
-
   // 使用 runZonedGuarded 包装 runApp
   runZonedGuarded<Future<void>>(() async {
     // 确保 Flutter 绑定已经初始化
@@ -33,10 +32,9 @@ void main() {
     //       errorAndStacktrace[1] as StackTrace,
     //   );
     // }).sendPort);
-
-
+   await initPlayerLicense();
     // 运行你的 Flutter 应用
-    runApp( MyApp());
+    runApp(MyApp());
   }, (Object error, StackTrace stack) {
     // 这是 Zone 捕获到未处理错误时调用的回调
     debugPrint('--- 捕获到未处理的错误！---');
@@ -53,6 +51,15 @@ void main() {
     // 但通常不推荐在 onError 中直接修改 UI 树，因为可能导致二次崩溃
     // 更常见的做法是设置一个 StreamBuilder 监听错误报告，然后构建错误 UI
   });
+}
+
+Future<void> initPlayerLicense() async {
+ await SuperPlayerPlugin.setGlobalLicense(
+      "https://license.vod2.myqcloud.com/license/v2/1306316007_1/v_cube.license",
+      "e09a3fc2d3e6d3910843b624260057b7");
+ await SuperPlayerPlugin.setLogLevel(0);
+  SuperPlayerPlugin.instance
+      .setSDKListener(licenceLoadedListener: (res, str) {});
 }
 
 ///创建一个自定义的Binding，继承和with的关系如下，里面什么都不用写
@@ -86,7 +93,7 @@ class _MyAppState extends State<MyApp> {
             );
           });
     },
-    'mainPage': (settings,  uniqueId) {
+    'mainPage': (settings, uniqueId) {
       return MaterialPageRoute(
           settings: settings,
           builder: (_) {
@@ -95,22 +102,19 @@ class _MyAppState extends State<MyApp> {
             );
           });
     },
-
-    'live': (settings,  uniqueId) {
+    'live': (settings, uniqueId) {
       return MaterialPageRoute(
           settings: settings,
           builder: (_) {
             return const Live();
           });
     },
-
-
   };
 
   Route<dynamic>? routeFactory(RouteSettings settings, String? uniqueId) {
     print("routeFactory $settings  $uniqueId");
     FlutterBoostRouteFactory? func = routerMap[settings.name];
-    if (func ==null) {
+    if (func == null) {
       return null;
     }
     return func(settings, uniqueId);
@@ -145,24 +149,24 @@ class Live extends StatefulWidget {
 }
 
 class _LiveState extends State<Live> {
-
   TXLivePlayerController txLivePlayerController = TXLivePlayerController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:  Container(
+      body: Container(
           width: 200,
           height: 200,
           child: TXPlayerVideo(
             onRenderViewCreatedListener: (viewId) {
               txLivePlayerController.setPlayerView(viewId);
-              txLivePlayerController.startLivePlay("http://prod-yungou-liveplay.jtmm.com/live/1600052372_257715297_852950.flv");
+              txLivePlayerController.startLivePlay(
+                  "https://www.bilibili.com/video/BV19RMBzBE4M");
             },
           )),
     );
   }
 }
-
 
 class MainPage extends StatelessWidget {
   const MainPage({required Object data});
@@ -191,10 +195,14 @@ class TabBarExample extends StatelessWidget {
           backgroundColor: Colors.deepPurple,
           // TabBar 通常放在 AppBar 的 bottom 属性中
           bottom: const TabBar(
-            isScrollable: true, // 如果标签很多，可以设置为可滚动
-            indicatorColor: Colors.white, // 选中标签的下划线颜色
-            labelColor: Colors.white,      // 选中标签的文本颜色
-            unselectedLabelColor: Colors.purpleAccent, // 未选中标签的文本颜色
+            isScrollable: true,
+            // 如果标签很多，可以设置为可滚动
+            indicatorColor: Colors.white,
+            // 选中标签的下划线颜色
+            labelColor: Colors.white,
+            // 选中标签的文本颜色
+            unselectedLabelColor: Colors.purpleAccent,
+            // 未选中标签的文本颜色
             labelStyle: TextStyle(fontWeight: FontWeight.bold),
             unselectedLabelStyle: TextStyle(fontStyle: FontStyle.italic),
             tabs: [
@@ -246,7 +254,6 @@ class TabContent extends StatelessWidget {
                 color: color,
               ),
             ),
-
             const SizedBox(height: 10),
             Text(
               '这是关于 "$title" 的详细内容。',
@@ -256,7 +263,6 @@ class TabContent extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-
           ],
         ),
       ),
@@ -272,7 +278,8 @@ class DynamicTabBarExample extends StatefulWidget {
 }
 
 class _DynamicTabBarExampleState extends State<DynamicTabBarExample>
-    with SingleTickerProviderStateMixin { // 混入 SingleTickerProviderStateMixin
+    with SingleTickerProviderStateMixin {
+  // 混入 SingleTickerProviderStateMixin
 
   late TabController _tabController; // 声明 TabController
   late Color _currentAppBarColor; // 用于存储当前 AppBar 的背景颜色
@@ -320,14 +327,14 @@ class _DynamicTabBarExampleState extends State<DynamicTabBarExample>
       if (!_tabController.indexIsChanging) {
         setState(() {
           _currentAppBarColor = _tabData[_tabController.index].color;
-          print('Tab switched to: ${_tabData[_tabController.index].text}, color: $_currentAppBarColor');
+          print(
+              'Tab switched to: ${_tabData[_tabController.index].text}, color: $_currentAppBarColor');
         });
-        if (_tabController.index ==3) {
-          BoostNavigator.instance.push("native",withContainer: true);
-          Future.delayed(const Duration(seconds: 1),(){
+        if (_tabController.index == 3) {
+          BoostNavigator.instance.push("native", withContainer: true);
+          Future.delayed(const Duration(seconds: 1), () {
             _tabController.index = 0;
           });
-
         }
       }
     });
@@ -347,14 +354,20 @@ class _DynamicTabBarExampleState extends State<DynamicTabBarExample>
         backgroundColor: _currentAppBarColor, // 使用动态颜色
         // TabBar 放在 AppBar 的 bottom 属性中
         bottom: TabBar(
-          controller: _tabController, // 关联 TabController
+          controller: _tabController,
+          // 关联 TabController
           isScrollable: true,
-          indicatorColor: Colors.white, // 选中标签的下划线颜色
-          labelColor: Colors.white,      // 选中标签的文本颜色
-          unselectedLabelColor: Colors.white70, // 未选中标签的文本颜色
+          indicatorColor: Colors.white,
+          // 选中标签的下划线颜色
+          labelColor: Colors.white,
+          // 选中标签的文本颜色
+          unselectedLabelColor: Colors.white70,
+          // 未选中标签的文本颜色
           labelStyle: const TextStyle(fontWeight: FontWeight.bold),
           unselectedLabelStyle: const TextStyle(fontStyle: FontStyle.italic),
-          tabs: _tabData.map((data) => Tab(text: data.text, icon: Icon(data.icon))).toList(),
+          tabs: _tabData
+              .map((data) => Tab(text: data.text, icon: Icon(data.icon)))
+              .toList(),
         ),
       ),
       body: TabBarView(
@@ -416,7 +429,8 @@ class TabContent2 extends StatelessWidget {
             CachedNetworkImage(
               width: 100,
               height: 100,
-              imageUrl: 'https://img.soogif.com/XMpNQPHjSPNtgdTyvyzXS0PUGxCQoQfr.gif',
+              imageUrl:
+                  'https://img.soogif.com/XMpNQPHjSPNtgdTyvyzXS0PUGxCQoQfr.gif',
               imageBuilder: (context, imageProvider) => Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(

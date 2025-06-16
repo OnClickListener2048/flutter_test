@@ -29,7 +29,7 @@ class MainActivity : FragmentActivity() {
                 B
             )
         )
-
+        viewPager2.offscreenPageLimit =4
         bottomNavigationView.setOnItemSelectedListener { it->
             when (it.itemId) {
                 R.id.navigation_dashboard -> {
