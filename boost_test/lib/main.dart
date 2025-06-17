@@ -153,12 +153,14 @@ class _LiveState extends State<Live> {
 
   @override
   Widget build(BuildContext context) {
+    print("buildbuildbuildbuildbuildbuild");
     return Scaffold(
       body: Container(
           width: 200,
           height: 200,
           child: TXPlayerVideo(
             onRenderViewCreatedListener: (viewId) {
+              print("onRenderViewCreatedListener $viewId");
               txLivePlayerController.setPlayerView(viewId);
               txLivePlayerController.startLivePlay(
                   "https://www.bilibili.com/video/BV19RMBzBE4M");

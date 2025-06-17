@@ -16,10 +16,10 @@ class MainActivity : FragmentActivity() {
         val viewPager2 = findViewById<ViewPager2>(R.id.view_pager)
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
 
-        val A =  FlutterBoostFragment.CachedEngineFragmentBuilder().url("live")
-                .build<FlutterBoostFragment>()
-        val B = FlutterBoostFragment.CachedEngineFragmentBuilder().url("mainPage")
-                .build<FlutterBoostFragment>()
+        val A =  FlutterTiensBoostFragment.CachedEngineFragmentBuilder().url("live")
+                .build<FlutterTiensBoostFragment>()
+        val B = FlutterTiensBoostFragment.CachedEngineFragmentBuilder().url("mainPage")
+                .build<FlutterTiensBoostFragment>()
 
         listOf(A,B)
         viewPager2.adapter = ViewPagerAdapter(
